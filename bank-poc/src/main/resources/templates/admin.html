@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head><meta charset="UTF-8"><title>Admin</title></head>
+<body>
+  <h2>Super Admin - All Transactions</h2>
+  <table border="1">
+    <tr><th>ID</th><th>Time</th><th>Card</th><th>Type</th><th>Amount</th><th>Status</th><th>Reason</th></tr>
+    <tr th:each="t : ${txs}">
+      <td th:text="${t.id}"></td>
+      <td th:text="${t.timestamp}"></td>
+      <td th:text="${t.cardNumber}"></td>
+      <td th:text="${t.type}"></td>
+      <td th:text="${t.amount}"></td>
+      <td th:text="${t.status}"></td>
+      <td th:text="${t.reason}"></td>
+    </tr>
+  </table>
+</body>
+</html>

@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Bank POC</title>
+</head>
+<body>
+  <h1>Bank POC</h1>
+  <ul>
+    <li><a th:href="@{/customer/login}">Customer login</a></li>
+    <li><a th:href="@{/admin}">Super Admin (requires basic auth)</a></li>
+    <li>API endpoints: POST /transaction and POST /process (JSON)</li>
+  </ul>
+</body>
+</html>

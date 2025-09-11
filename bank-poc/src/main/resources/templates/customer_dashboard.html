@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head><meta charset="UTF-8"><title>Customer Dashboard</title></head>
+<body>
+  <h2>Customer Dashboard</h2>
+  <div>
+    <b>Owner:</b> <span th:text="${card.ownerName}"></span><br/>
+    <b>Card:</b> <span th:text="${card.cardNumber}"></span><br/>
+    <b>Balance:</b> <span th:text="${card.balance}"></span><br/>
+  </div>
+
+  <h3>Top-up</h3>
+  <form id="topupForm">
+    <input type="hidden" id="cardNumber" value="" th:value="${card.cardNumber}"/>
+    <label>PIN: <input id="pin" type="password"/></label><br/>
+    <label>Amount: <input id="amount"/></label><br/>
+    <button type="button" onclick="doTopup()">Top-up</button>
+  </form>
+
+  <h3>Transactions</h3>
+  <table border="1">
+    <tr><th>Time</th><th>Type</th><th>Amount</th><th>Status</th><th>Reason</th></tr>
+    <tr th:each="t : ${txs}">
+      <td th:text="${t.timestamp}"></td>
+      <td th:text="${t.type}"></td>
+      <td th:text="${t.amount}"></td>
+      <td th:text="${t.status}"></td>
+      <td th:text="${t.reason}"></td>
+    </tr>
+  </table>
+
+<script>
+function doTopup(){
+  const cardNumber = document.getElementById('cardNumber').value;
+  const pin = document.getElementById('pin').value;
+  const amount = document.getElementById('amount').value;
+  fetch('/transaction',{
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body: JSON.stringify({cardNumber, pin, amount: parseFloat(amount), type: 'topup'})
+  }).then(r=>r.json()).then(j=>{
+    alert(j.message);
+    location.reload();
+  }).catch(e=>alert('Error: '+e));
+}
+</script>
+
+</body>
+</html>
