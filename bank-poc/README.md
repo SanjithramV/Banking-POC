@@ -1,6 +1,6 @@
 # Bank POC (Spring Boot + Thymeleaf)
 
-This project implements the intern assessment POC described in the uploaded PDF.
+This project implements the intern assessment POC described in the assessment pdf.
 
 ## Structure
 - `src/main/java/com/example/bankpoc` - application code
