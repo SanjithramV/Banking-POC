@@ -1,42 +1,120 @@
-# Bank POC (Spring Boot + Thymeleaf)
+Banking POC – Simplified Banking System
 
-This project implements the intern assessment POC described in the assessment pdf.
+This project is a Proof of Concept (POC) implementation of a simplified banking system.
+It demonstrates transaction processing, card validation, PIN security, and role-based monitoring using Spring Boot (Java) for the backend and React.js for the frontend.
 
-## Structure
-- `src/main/java/com/example/bankpoc` - application code
-- `src/main/resources/templates` - Thymeleaf UI for customer and admin
-- `pom.xml` - Maven build
+The system is built according to the Intern Assessment requirements.
 
-## How to run
-1. Ensure JDK 17+ and Maven installed.
-2. From project root:
-   ```
-   mvn spring-boot:run
-   ```
-3. Access:
-   - UI: http://localhost:8080/
-   - Customer login: http://localhost:8080/customer/login
-   - Admin UI: http://localhost:8080/admin (HTTP Basic auth: admin/adminpass)
-   - H2 console: http://localhost:8080/h2-console (jdbc:h2:mem:bankdb, user=sa)
+🚀 Features
+🔹 System 1 – Transaction Ingress & Routing
 
-## API
-- POST `/transaction` - System 1. Example:
-```
-POST /transaction
-Content-Type: application/json
-{
-  "cardNumber":"4123456789012345",
-  "pin":"1234",
-  "amount":100,
-  "type":"withdraw"
-}
-```
-- POST `/process` - System 2 (internal). Accepts same payload.
+/transaction API for withdrawals and top-ups
 
-## Test cases (preloaded)
-- Card 4123456789012345, PIN 1234, balance 1000.00 (supported)
-- Card 4123456789012346, PIN 4321, balance 50.00 (supported)
-- Card 5123456789012345, PIN 0000, balance 500.00 (NOT supported by System 1 routing)
+Validates card_number, pin, amount, and type
 
-PINs are stored as SHA-256 hashes. No plaintext PINs are stored or logged.
+Ensures amount is positive (> 0)
+
+Routes only Visa cards (card numbers starting with 4)
+
+Rejects unsupported card ranges
+
+🔹 System 2 – Card Validation & Processing
+
+/process API validates and processes transactions
+
+Verifies card existence in DB
+
+Validates PIN with SHA-256 hashing
+
+Updates card balance (withdraw/top-up)
+
+Declines invalid card, invalid PIN, insufficient balance
+
+🔹 Security
+
+PINs securely stored using SHA-256 hashing
+
+No plain-text PIN storage or logging
+
+🔹 Role-Based Web UI
+
+Super Admin:
+
+View all transactions in the system
+
+Customer:
+
+Login with card details
+
+View balance and personal transaction history
+
+Perform top-ups
+
+📂 Project Structure
+Banking-POC/
+│
+├── backend/
+│   ├── system1-ingress/        # Handles transaction ingress & routing
+│   ├── system2-processing/     # Handles card validation & processing
+│   └── pom.xml                 # Maven dependencies
+│
+├── frontend/                   # React role-based UI
+│   ├── src/components/         # UI components (Admin, Customer, etc.)
+│   ├── package.json
+│   └── README.md
+│
+├── docs/                       # Documentation & test cases
+│   ├── setup.md
+│   ├── api-examples.md
+│   ├── test-cases.md
+│   └── architecture-diagram.png
+│
+└── README.md                   # This file
+
+🛠️ Tech Stack
+
+Backend: Java, Spring Boot, H2 Database, Spring Security
+
+Frontend: React.js, Axios
+
+Security: SHA-256 for PIN hashing
+
+Build Tools: Maven, npm
+
+⚙️ Setup Instructions
+🔹 Backend (System 1 & 2)
+cd backend
+mvn spring-boot:run
+
+
+Runs on: http://localhost:8080
+
+🔹 Frontend (React UI)
+cd frontend
+npm install
+npm start
+
+
+Runs on: http://localhost:3000
+
+📌 Example API Requests
+Withdraw Transaction (Valid)
+curl -X POST http://localhost:8080/transaction \
+-H "Content-Type: application/json" \
+-d '{
+  "card_number": "4123456789012345",
+  "pin": "1234",
+  "amount": 100,
+  "type": "withdraw"
+}'
+
+Top-Up Transaction (Valid)
+curl -X POST http://localhost:8080/transaction \
+-H "Content-Type: application/json" \
+-d '{
+  "card_number": "4123456789012345",
+  "pin": "1234",
+  "amount": 500,
+  "type": "topup"
+}'
 
