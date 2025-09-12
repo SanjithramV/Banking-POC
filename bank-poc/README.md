@@ -136,3 +136,9 @@ Invalid Card
 <img width="618" height="329" alt="image" src="https://github.com/user-attachments/assets/d1b7c465-a910-4b77-9043-740af62cbfb1" />
 
 
+Invalid Withdraw
+
+<img width="1547" height="639" alt="image" src="https://github.com/user-attachments/assets/47b312c8-4652-49f3-8c2e-e365d1419d1a" />
+
+
+
