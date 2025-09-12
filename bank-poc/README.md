@@ -118,3 +118,21 @@ curl -X POST http://localhost:8080/transaction \
   "type": "topup"
 }'
 
+CUSTOMER DASHBOARD 
+
+<img width="1137" height="565" alt="image" src="https://github.com/user-attachments/assets/69316481-445c-45b1-bd0d-e1e4d3516e9b" /> 
+
+
+H2CONSOLE 
+
+
+<img width="1797" height="865" alt="image" src="https://github.com/user-attachments/assets/29ce2f05-c6d5-4da5-8287-5173275f4c9e" />
+
+
+
+Invalid Card
+
+
+<img width="618" height="329" alt="image" src="https://github.com/user-attachments/assets/d1b7c465-a910-4b77-9043-740af62cbfb1" />
+
+
