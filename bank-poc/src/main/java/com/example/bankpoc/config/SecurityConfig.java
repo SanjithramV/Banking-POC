@@ -23,12 +23,16 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http.csrf().disable()
-            .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/admin").hasRole("ADMIN")
-                .anyRequest().permitAll()
-            )
-            .httpBasic(Customizer.withDefaults());
+        http
+                .csrf(csrf -> csrf.disable()) // disable CSRF for H2 console
+                .headers(headers -> headers.frameOptions().disable()) // allow frames for H2 console
+                .authorizeHttpRequests(auth -> auth
+                        .requestMatchers("/h2-console/**").permitAll() // allow H2 console
+                        .requestMatchers("/admin").hasRole("ADMIN") // admin endpoint
+                        .anyRequest().permitAll() // everything else
+                )
+                .httpBasic(Customizer.withDefaults());
+
         return http.build();
     }
 }
