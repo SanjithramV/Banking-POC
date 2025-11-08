@@ -1,0 +1,65 @@
+name: Banking POC CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    services:
+      # Optional: H2 runs in-memory, so you likely don’t need this
+      # If you use MySQL or Postgres instead, uncomment and configure here
+      # mysql:
+      #   image: mysql:8
+      #   env:
+      #     MYSQL_ROOT_PASSWORD: root
+      #     MYSQL_DATABASE: bankdb
+      #   ports:
+      #     - 3306:3306
+      #   options: >-
+      #     --health-cmd="mysqladmin ping --silent"
+      #     --health-interval=10s
+      #     --health-timeout=5s
+      #     --health-retries=3
+
+    steps:
+      # 1️⃣ Checkout repo
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # 2️⃣ Setup Java for Spring Boot backend
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      # 3️⃣ Build Spring Boot backend (Maven)
+      - name: Build Spring Boot backend
+        run: mvn -B clean package --file pom.xml
+
+      # 4️⃣ (Optional) Setup Node.js for React frontend
+      - name: Setup Node.js
+        if: hashFiles('frontend/package.json') != ''
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+
+      # 5️⃣ Install and build frontend
+      - name: Build React frontend
+        if: hashFiles('frontend/package.json') != ''
+        working-directory: frontend
+        run: |
+          npm ci
+          npm run build
+
+      # 6️⃣ Upload build artifacts (optional)
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: springboot-jar
+          path: target/*.jar
